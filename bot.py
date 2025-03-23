@@ -1,18 +1,8 @@
 import os
 import random
+import asyncio
 from aiogram import Bot, Dispatcher, types
 from aiogram.types import InputFile
-from aiogram.enums import ParseMode
-from aiogram.fsm.storage.memory import MemoryStorage
-from aiogram.utils.markdown import hbold
-from aiogram import Router
-from aiogram import F
-from aiogram.utils.keyboard import InlineKeyboardBuilder
-from aiogram.client.session.aiohttp import AiohttpSession
-from aiogram import BaseMiddleware
-from aiogram import web
-from aiogram import Dispatcher
-import asyncio
 
 TOKEN = os.getenv("BOT_TOKEN")
 bot = Bot(token=TOKEN)
