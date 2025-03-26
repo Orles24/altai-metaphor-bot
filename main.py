@@ -1,8 +1,12 @@
+import os
+import random
+import time
+import logging
 from telegram import InlineKeyboardButton, InlineKeyboardMarkup, Update
 from telegram.ext import Updater, CommandHandler, CallbackQueryHandler, CallbackContext
 from keep_alive import keep_alive
-import os
-import random
+
+logging.basicConfig(format='%(asctime)s - %(name)s - %(levelname)s - %(message)s', level=logging.INFO)
 
 TOKEN = os.getenv("TOKEN")
 CARDS_DIR = "cards"
@@ -14,11 +18,9 @@ def start(update: Update, context: CallbackContext):
     keyboard = [[InlineKeyboardButton("🔮 Вытянуть карту", callback_data="draw_card")]]
     reply_markup = InlineKeyboardMarkup(keyboard)
     update.message.reply_text(
-        "🏔 Здесь ты можешь познакомиться с метафорической колодой, "
-        "основанной на реальных локациях Алтая.\n\n"
-        "Каждая карта — это не просто изображение, а символ, отклик, подсказка, "
-        "возможность услышать ответ и задуматься о жизни 💭\n\n"
-        "Нажимай на кнопку и смотри, что хочет сказать тебе Алтай ⬇️\n\n",
+        "🏔 Здесь ты можешь познакомиться с метафорической колодой, основанной на реальных локациях Алтая.\n\n"
+        "Каждая карта — это не просто изображение, а символ, отклик, подсказка, возможность услышать ответ и задуматься о жизни 💭\n\n"
+        "Нажимай на кнопку и смотри, что хочет сказать тебе Алтай.\n\n👇",
         reply_markup=reply_markup
     )
 
@@ -35,10 +37,8 @@ def draw_card(update: Update, context: CallbackContext):
         [InlineKeyboardButton("🔮 Вытянуть ещё", callback_data="draw_card")],
         [InlineKeyboardButton("☁️ Связаться с автором", url="https://t.me/Orles_24")]
     ]
-
     if count % 5 == 0:
         keyboard.append([InlineKeyboardButton("☕ Поблагодарить автора", callback_data="thank_author")])
-
     reply_markup = InlineKeyboardMarkup(keyboard)
 
     with open(card_path, 'rb') as photo:
@@ -66,6 +66,14 @@ def main():
     updater.start_polling()
     updater.idle()
 
-# Запуск Flask + бота
-keep_alive()
-main()
+def run_bot():
+    while True:
+        try:
+            main()
+        except Exception as e:
+            logging.error("Bot crashed: %s", e)
+            time.sleep(5)  # Ждём 5 секунд перед перезапуском
+
+if __name__ == "__main__":
+    keep_alive()  # Запускаем Flask-сервер, чтобы Render не "усыпал" приложение
+    run_bot()
