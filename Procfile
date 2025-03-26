@@ -1,2 +1,3 @@
-web: python delete_webhook.py
+web: python main.py
+
 
