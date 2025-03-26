@@ -5,7 +5,7 @@ from telegram import Bot
 TOKEN = os.getenv("TOKEN")
 
 # Если хочешь вставить токен прямо в код, раскомментируй и замени строку выше:
-# TOKEN = "ВАШ_НОВЫЙ_ТОКЕН_ОТ_BOTFATHER"
+# TOKEN = "7973405224:AAF8fZHZtSp7Yot9xOoVRvdnoejHWoKFhBA"
 
 def delete_webhook():
     bot = Bot(token=TOKEN)
